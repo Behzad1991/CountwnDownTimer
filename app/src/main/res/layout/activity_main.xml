@@ -11,6 +11,33 @@
         android:id="@+id/txt_view_count_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="00:00"
+        android:textColor="@android:color/black"
+        android:textSize="60sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/button_start_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textAllCaps="false"
+        android:layout_below="@id/txt_view_count_down"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/button_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:textAllCaps="false"
+        android:layout_below="@id/txt_view_count_down"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@id/button_start_pause"
+        android:visibility="invisible"
+        android:layout_marginLeft="11dp"
+        android:layout_toRightOf="@id/button_start_pause"
+        tools:visibility="visible"/>
 
 </RelativeLayout>
