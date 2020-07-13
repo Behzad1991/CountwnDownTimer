@@ -1,5 +1,6 @@
 package com.HeyWorld.countwndowntimer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -78,17 +79,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish (){
             timerRunning = false;
-            startPauseBtn.setText ("Start");
-            startPauseBtn.setVisibility (View.INVISIBLE);
-            resetBtn.setVisibility (View.VISIBLE);
+            updateButton ();
             }
         }.start ();
 
         timerRunning = true;
-        startPauseBtn.setText ("Pause");
-        resetBtn.setVisibility (View.INVISIBLE);
+        updateButton ();
     }
     //Start timer. It runs inside startPauseBtn()
+
+    //Pause the timer. It runs inside StartPauseBtn()
+    private void pauseTimer(){
+        Log.d (TAG, "pauseTimer: timer paused");
+
+        countDownTimer.cancel ();
+        timerRunning = false;
+        updateButton ();
+    }
+    //Pause the timer. It runs inside StartPauseBtn()
+
+    //Reset the timer. It runs inside ResetBtn()
+    private void resetTimer(){
+        Log.d (TAG, "resetTimer: timer rested it");
+
+        timeLeftInMillis = START_TIME_IN_MILLIS;
+        updateCountDownTxt ();
+        updateButton ();
+    }
+    //Reset the timer. It runs inside ResetBtn()
 
     //It shows the time. It runs inside startTimer()
     private void updateCountDownTxt(){
@@ -102,27 +120,55 @@ public class MainActivity extends AppCompatActivity {
     }
     //It shows the time. It runs inside startTimer()
 
-    //Pause the timer. It runs inside StartPauseBtn()
-    private void pauseTimer(){
-        Log.d (TAG, "pauseTimer: timer paused");
+    //Handle the buttons condition in this method. It will be used inside all funs that need updated button
+    private void updateButton(){
+        Log.d (TAG, "updateButton: update buttons");
 
-        countDownTimer.cancel ();
-        timerRunning = false;
-        startPauseBtn.setText ("Start");
-        resetBtn.setVisibility (View.VISIBLE);
+        if(timerRunning){
+            resetBtn.setVisibility (View.INVISIBLE);
+            startPauseBtn.setText ("Pause");
+        }else{
+            startPauseBtn.setText ("Start");
+
+            if(timeLeftInMillis < 1000){
+                startPauseBtn.setVisibility (View.INVISIBLE);
+            }else{
+                startPauseBtn.setVisibility (View.VISIBLE);
+            }
+
+            if(timeLeftInMillis < START_TIME_IN_MILLIS){
+                resetBtn.setVisibility (View.VISIBLE);
+            }else{
+                resetBtn.setVisibility (View.INVISIBLE);
+            }
+        }
     }
-    //Pause the timer. It runs inside StartPauseBtn()
 
-    //Reset the timer. It runs inside ResetBtn()
-    private void resetTimer(){
-        Log.d (TAG, "resetTimer: timer rested it");
+    //We use this override to stabilize the variables when the device changes the orientation
+    @Override
+    protected void onSaveInstanceState (@NonNull Bundle outState){
+        super.onSaveInstanceState (outState);
 
-        timeLeftInMillis = START_TIME_IN_MILLIS;
+        outState.putLong ("millisLeft", timeLeftInMillis);
+        outState.putBoolean ("timerRunning", timerRunning);
+    }
+    //We use this override to stabilize the variables when the device changes the orientation
+
+    //This override method runs if there is any changes in above statement
+    @Override
+    protected void onRestoreInstanceState (@NonNull Bundle savedInstanceState){
+        super.onRestoreInstanceState (savedInstanceState);
+
+        timeLeftInMillis = savedInstanceState.getLong ("millisLeft");
+        timerRunning = savedInstanceState.getBoolean ("timerRunning");
         updateCountDownTxt ();
-        resetBtn.setVisibility (View.INVISIBLE);
-        startPauseBtn.setVisibility (View.VISIBLE);
+        updateButton ();
+
+        if (timerRunning){
+            startTimer ();
+        }
     }
-    //Reset the timer. It runs inside ResetBtn()
+    //This override method runs if there is any changes in above statement
 
 
 
