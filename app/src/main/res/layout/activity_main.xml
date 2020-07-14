@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:hint="Minutes"
+        android:maxLength="4"
+        android:inputType="number"
+        android:layout_above="@id/txt_view_count_down"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/set_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/input"
+        android:layout_alignTop="@id/input"
+        android:text="Set"
+        android:textAllCaps="false"
+        android:layout_toRightOf="@id/input" />
     <TextView
         android:id="@+id/txt_view_count_down"
         android:layout_width="wrap_content"
